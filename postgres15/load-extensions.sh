@@ -14,6 +14,10 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$DB" <<-EOSQL
     CREATE EXTENSION IF NOT EXISTS postgis_topology;
     \c
     CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
-    CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder;
+    CREATE EXTENSION IF NOT EXISTS hll;
+    CREATE EXTENSION IF NOT EXISTS pg_repack;
+    CREATE EXTENSION IF NOT EXISTS pgrouting;
+    CREATE EXTENSION IF NOT EXISTS rum;
+    SELECT extname,extversion FROM pg_extension;
 EOSQL
 done

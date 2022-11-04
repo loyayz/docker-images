@@ -13,6 +13,10 @@ RUN apt-get update \
            \
            postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR=$POSTGIS_VERSION \
            postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR-scripts \
+           postgresql-$PG_MAJOR-hll \
+           postgresql-$PG_MAJOR-repack \
+           postgresql-$PG_MAJOR-pgrouting \
+           postgresql-$PG_MAJOR-rum \
       # clean
       && apt-get purge -y \
             wget make gcc libc6-dev postgresql-server-dev-$PG_MAJOR \
