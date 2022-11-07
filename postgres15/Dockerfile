@@ -2,9 +2,9 @@ FROM loyayz/postgres-zhparser:15
 
 LABEL maintainer="loyayz - https://loyayz.com"
 
-ENV PG_WORK_USER work
-ENV PG_WORK_PASSWORD work
-ENV PG_WORK_DATABASE work
+ENV PG_WORK_USER ""
+ENV PG_WORK_PASSWORD ""
+ENV PG_WORK_DB ""
 
 # postgis https://github.com/postgis/docker-postgis/blob/master/15-3.3/Dockerfile
 ENV POSTGIS_MAJOR 3
@@ -34,10 +34,7 @@ RUN apt-get update \
       && rm -rf /pg_stat_monitor-main \
             /var/lib/apt/lists/*
 
-RUN mkdir -p /docker-entrypoint-initdb.d
-COPY ./load-extensions.sh /docker-entrypoint-initdb.d/20_load-extensions.sh
-COPY ./init-worker.sh /docker-entrypoint-initdb.d/99_init-worker.sh
+COPY init.sh /docker-entrypoint-initdb.d/20_init.sh
 COPY ./update-postgis.sh /usr/local/bin
-RUN chmod 755 /docker-entrypoint-initdb.d/20_load-extensions.sh \
-    /docker-entrypoint-initdb.d/99_init-worker.sh \
+RUN chmod 755 /docker-entrypoint-initdb.d/20_init.sh \
     /usr/local/bin/update-postgis.sh
