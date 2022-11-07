@@ -9,7 +9,7 @@ psql -U $POSTGRES_USER -tc "SELECT 1 FROM pg_database WHERE datname = 'template_
 for DB in template_db "$POSTGRES_DB"; do
 echo "Loading extensions extensions into $DB"
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$DB" <<-EOSQL
-    CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+    CREATE EXTENSION IF NOT EXISTS pg_stat_monitor;
     CREATE EXTENSION IF NOT EXISTS postgis;
     CREATE EXTENSION IF NOT EXISTS postgis_topology;
     \c
