@@ -12,15 +12,27 @@ psql -U $POSTGRES_USER -tc "SELECT 1 FROM pg_database WHERE datname = '$TEMPLATE
 for DB in "$TEMPLATE_DB" "$POSTGRES_DB"; do
 echo "Loading extensions extensions into $DB"
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$DB" <<-EOSQL
+    CREATE EXTENSION IF NOT EXISTS moddatetime;
+    CREATE EXTENSION IF NOT EXISTS pg_trgm;
     CREATE EXTENSION IF NOT EXISTS pg_stat_monitor;
+    CREATE EXTENSION IF NOT EXISTS pg_repack;
     CREATE EXTENSION IF NOT EXISTS postgis;
     CREATE EXTENSION IF NOT EXISTS postgis_topology;
     \c
     CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
     CREATE EXTENSION IF NOT EXISTS hll;
-    CREATE EXTENSION IF NOT EXISTS pg_repack;
+    CREATE EXTENSION IF NOT EXISTS pgroonga;
     CREATE EXTENSION IF NOT EXISTS pgrouting;
     CREATE EXTENSION IF NOT EXISTS rum;
+    CREATE EXTENSION IF NOT EXISTS zhparser;
+    DO
+    \$\$BEGIN
+      CREATE TEXT SEARCH CONFIGURATION chn (PARSER = zhparser);
+      ALTER  TEXT SEARCH CONFIGURATION chn ADD MAPPING FOR n,v,a,i,e,l,t WITH simple;
+    EXCEPTION
+    WHEN unique_violation THEN
+    NULL;  -- ignore error
+    END;\$\$;
     SELECT extname,extversion FROM pg_extension;
 EOSQL
 done
