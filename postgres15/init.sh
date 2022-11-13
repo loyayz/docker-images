@@ -13,6 +13,7 @@ for DB in "$TEMPLATE_DB" "$POSTGRES_DB"; do
 echo "Loading extensions extensions into $DB"
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$DB" <<-EOSQL
     CREATE EXTENSION IF NOT EXISTS moddatetime;
+    CREATE EXTENSION IF NOT EXISTS intarray;
     CREATE EXTENSION IF NOT EXISTS pg_trgm;
     CREATE EXTENSION IF NOT EXISTS pg_stat_monitor;
     CREATE EXTENSION IF NOT EXISTS pg_repack;
